@@ -46,22 +46,10 @@ int ccw(pair<int,int> a, pair<int,int> b, pair<int,int> c) {
 Print Stack
 *********************************************************************/
 void printStack(vector<pair<int,int>> &s){
+  cout<<"********************************************************"<<endl;
   for(int i=0;i<s.size();i++)
     cout<<"\t"<<s[i].first<<' '<<s[i].second<<endl;
   cout<<endl;
-}
-
-/*********************************************************************
-Graham's Scan
-*********************************************************************/
-vector<pair<int,int>> graham(const vector<pair<int,int>> &points){
-  vector<pair<int,int>> stack;
-  for(int i=0;i<points.size();i++){
-    while(stack.size()>1 && ccw(stack[stack.size()-2], stack.back(), points[i]) <= 0)
-      stack.pop_back();
-    stack.push_back(points[i]);
-  }
-  return stack;
 }
 
 /*********************************************************************
@@ -75,6 +63,20 @@ void polarSort(vector<pair<int,int>> &v){
   v.clear();
   for(auto e:s) v.push_back(e.second);
   reverse(v.begin()+1,v.end()); 
+}
+
+/*********************************************************************
+Graham's Scan
+*********************************************************************/
+vector<pair<int,int>> graham(vector<pair<int,int>> &points){
+  vector<pair<int,int>> stack;
+  polarSort(points);
+  for(int i=0;i<points.size();i++){
+    while(stack.size()>1 && ccw(stack[stack.size()-2], stack.back(), points[i]) <= 0)
+      stack.pop_back();
+    stack.push_back(points[i]);
+  }
+  return stack;
 }
 
 /*********************************************************************
@@ -94,7 +96,35 @@ double getArea(const vector<pair<int,int>>& points) {
 /*********************************************************************
 Main
 *********************************************************************/
-void despeckle(vector<pair<int,int>> & points){
+void despeckle(vector<pair<int,int>> & points, const double thresh){
+  double areaBefore=2, areaAfter=1;
+  bool foundSpeckle=true;
+  vector<pair<int,int>> pointsAfter=points;
+  vector<pair<int,int>> hull;
+  while(foundSpeckle){
+    cout<<"one"<<endl;
+    foundSpeckle=false;
+    hull=graham(points);
+    areaBefore=getArea(hull);
+
+    for(int i=0;i<points.size();i++){
+      pointsAfter=points;
+      points.erase(pointsAfter.begin()+i);
+
+      hull = graham(pointsAfter);
+      areaAfter=getArea(hull);
+
+      cout<<"areaBefore: "<<areaBefore<<endl;
+      cout<<"areaAfter : "<<areaAfter<<endl<<endl;
+      if(1.0-(areaAfter/areaBefore)>thresh){
+        foundSpeckle=true;
+        pointsAfter.erase(pointsAfter.begin()+i);
+        break;
+      }
+    }
+    points=pointsAfter;
+    printStack(points);
+  }
 }
 
 
@@ -103,21 +133,20 @@ Main
 *********************************************************************/
 int main(int argc, char ** argv){
 
-  int threshold=atoi(argv[2]);
+  double thresh=atoi(argv[2])/100;
   vector<pair<int,int>> points=getPoints(argv);
 
-  polarSort(points);
-  printStack(points);
 
   vector<pair<int,int>> cvhull = graham(points);
-  cout<<"cvhull size: "<<cvhull.size()<<endl;
-  printStack(cvhull);
-
   double A = getArea(cvhull);
   cout<<"Area: "<<A<<endl;
+  //printStack(cvhull);
+
+  despeckle(points,thresh);
 
 
-  printStack(cvhull);
+
+
 }
 
 
