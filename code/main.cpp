@@ -71,23 +71,24 @@ void polarSort(vector<pair<int,int>> &v){
   sort(v.begin(),v.end()); // find v[0]
   set<pair<float,pair<int,int>>> s;
   for(int i=1;i<v.size();i++) s.insert({atan2(v[i].second-v[0].second,v[i].first-v[0].first),v[i]});
-  s.insert({100,v[0]}); 
+  s.insert({-100,v[0]}); 
   v.clear();
   for(auto e:s) v.push_back(e.second);
-  //reverse(v.begin()+1,v.end()); 
+  reverse(v.begin()+1,v.end()); 
 }
 
 /*********************************************************************
 https://cp-algorithms.com/geometry/area-of-simple-polygon.html
 *********************************************************************/
 double getArea(const vector<pair<int,int>>& points) {
-    double area=0;
-    for (int i=0; i<points.size(); i++) {
-        pair<int,int> a = i ? points[i - 1] : points.back();
-        pair<int,int> b = points[i];
-        area+= (a.first-b.first) * (a.second+b.second);
-    }
-    return fabs(area) / 2;
+  double area=0;
+  for (int i=0; i<points.size(); i++) {
+    pair<int,int> a = i ? points[i - 1] : points.back();
+    pair<int,int> b = points[i];
+    area+= (a.first-b.first) * (a.second+b.second);
+    cout<<"area: "<<area<<endl;  
+  }
+  return fabs(area) / 2;
 }
 
 /*********************************************************************
@@ -110,8 +111,9 @@ int main(int argc, char ** argv){
 
   vector<pair<int,int>> cvhull = graham(points);
   cout<<"cvhull size: "<<cvhull.size()<<endl;
+  printStack(cvhull);
 
-  int A = getArea(cvhull);
+  double A = getArea(cvhull);
   cout<<"Area: "<<A<<endl;
 
 
