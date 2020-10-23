@@ -99,16 +99,15 @@ Main
 void despeckle(vector<pair<int,int>> & points, const double thresh){
   double areaBefore=2, areaAfter=1;
   bool foundSpeckle=true;
-  vector<pair<int,int>> pointsAfter=points;
-  vector<pair<int,int>> hull;
+  vector<pair<int,int>> pointsBefore=points, pointsAfter=points, hull=graham(points);
+
+  hull=graham(points);
+  areaBefore=getArea(hull);
+
   while(foundSpeckle){
-    cout<<"one"<<endl;
     foundSpeckle=false;
-    hull=graham(points);
-    areaBefore=getArea(hull);
 
     for(int i=0;i<points.size();i++){
-      pointsAfter=points;
       points.erase(pointsAfter.begin()+i);
 
       hull = graham(pointsAfter);
@@ -122,7 +121,7 @@ void despeckle(vector<pair<int,int>> & points, const double thresh){
         break;
       }
     }
-    points=pointsAfter;
+    pointsBefore=pointsAfter;
     printStack(points);
   }
 }
