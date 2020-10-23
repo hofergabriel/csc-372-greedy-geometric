@@ -8,29 +8,18 @@ Date: October 22, 2020
 #include <bits/stdc++.h>
 using namespace std;
 
- 
-
 /*********************************************************************
-The code below uses a function ccw: 
+the code below uses a function ccw: 
   ccw > 0 if three points make a counter-clockwise turn, 
   clockwise if ccw < 0, and collinear if ccw = 0.
 *********************************************************************/
 vector<pair<int,int>> getPoints(char ** argv){
-  int rows, cols;
+  int rows, cols, p;
+  string p1;
+  vector<pair<int,int>> points;
   ifstream fin;
   fin.open(argv[1]);
-
-  cout<<"one"<<endl;
-  string p1;
-  fin>>p1;
-  cout<<"type: "<<p1<<endl;
-
-  fin>>cols>>rows;
-  cout<<"cols, rows"<<endl;
-  cout<<cols<<" "<<rows<<endl;
-
-  int p;
-  vector<pair<int,int>> points;
+  fin>>p1>>cols>>rows;
   for(int i=0;i<rows;i++)
     for(int j=0;j<cols;j++){
       fin>>p;
@@ -44,14 +33,22 @@ https://www.geeksforgeeks.org/orientation-3-ordered-points/
 
 To find orientation of ordered triplet (p1, p2, p3). 
 The function returns following values 
-0 --> p, q and r are colinear 
-1 --> Clockwise 
-2 --> Counterclockwise 
+=0 --> p, q and r are colinear 
+>0 --> Clockwise 
+<0 --> Counterclockwise 
 *********************************************************************/
-int orientation(pair<int,int> a, pair<int,int> b, pair<int,int> c) { 
+int ccw(pair<int,int> a, pair<int,int> b, pair<int,int> c) { 
   return (b.second - a.second) * (c.first - b.first) - 
     (b.first - a.first) * (c.second - b.second); 
 }
+
+void printStack(vector<pair<int,int>> &s){
+  for(int i=0;i<s.size();i++){
+    cout<<"\t"<<s[i].first<<' '<<s[i].second<<endl;
+  }
+  cout<<endl;
+}
+
 
 /*********************************************************************
 https://en.wikipedia.org/wiki/Graham_scan#Pseudocode
@@ -68,21 +65,35 @@ for point in points:
         pop stack
     push point to stack
 end
-
-
-
-
 *********************************************************************/
-vector<int> graham(vector<pair<int,int>> &points){
-  vector<int> stack;
-  sort(points.begin(),points.end());
+vector<pair<int,int>> graham(vector<pair<int,int>> &points){
+  vector<pair<int,int>> stack;
   for(int i=0;i<points.size();i++){
-    cout<<points[i].first<<' '<<points[i].second<<endl;
+    cout<<"current point: "<<points[i].first<<' '<<points[i].second<<endl;
+    while(stack.size()>1 && ccw(stack[stack.size()-2], stack.back(), points[i]) <= 0)
+      stack.pop_back();
+    stack.push_back(points[i]);
+    printStack(stack);
   }
-  cout<<endl;
   return stack;
 }
 
+void polarSort(vector<pair<int,int>> &v){
+  sort(v.begin(),v.end());
+  cout<<"first point: "<<v[0].first<<' '<<v[0].second<<endl;
+  set<pair<float,pair<int,int>>> s;
+  for(int i=1;i<v.size();i++)
+    s.insert({atan2(v[i].second-v[0].second,v[i].first-v[0].first),v[i]});
+  s.insert({-10000,v[0]});
+  v.clear();
+
+  for(auto e:s)
+    cout<<"theta: "<<e.first<<" "<<e.second.first<<"  "<<e.second.second<<endl;
+  cout<<endl;
+
+  for(auto e:s) v.push_back(e.second);
+  reverse(v.begin()+1,v.end());
+}
 
 
 /*********************************************************************
@@ -90,18 +101,17 @@ Main
 *********************************************************************/
 int main(int argc, char ** argv){
 
+
   int threshold=atoi(argv[2]);
   vector<pair<int,int>> points=getPoints(argv);
 
-  vector<int> sorted = graham(points);
+  polarSort(points);
+  printStack(points);
 
-/*
-  for(int i=0;i<points.size();i++){
-    cout<<points[i].first<<' '<<points[i].second<<endl;
-  }
-  cout<<endl;
-*/
-  return 0;
+
+  vector<pair<int,int>> cvhull = graham(points);
+  cout<<"cvhull size: "<<cvhull.size()<<endl;
+  printStack(cvhull);
 }
 
 
