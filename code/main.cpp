@@ -47,8 +47,7 @@ Print Stack
 *********************************************************************/
 void printStack(vector<pair<int,int>> &s){
   cout<<"********************************************************"<<endl;
-  for(int i=0;i<s.size();i++)
-    cout<<"\t"<<s[i].first<<' '<<s[i].second<<endl;
+  for(int i=0;i<s.size();i++) cout<<"\t"<<s[i].first<<' '<<s[i].second<<endl;
   cout<<endl;
 }
 
@@ -58,7 +57,8 @@ Sort points by polar angle
 void polarSort(vector<pair<int,int>> &v){
   sort(v.begin(),v.end()); // find v[0]
   set<pair<float,pair<int,int>>> s;
-  for(int i=1;i<v.size();i++) s.insert({atan2(v[i].second-v[0].second,v[i].first-v[0].first),v[i]});
+  for(int i=1;i<v.size();i++) 
+    s.insert({atan2(v[i].second-v[0].second,v[i].first-v[0].first),v[i]});
   s.insert({-100,v[0]}); 
   v.clear();
   for(auto e:s) v.push_back(e.second);
