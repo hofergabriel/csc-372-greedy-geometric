@@ -22,13 +22,12 @@ typedef pair<double,double> pt;
 Main
 *********************************************************************/
 int main(int argc, char ** argv){
-  double thresh=atoi(argv[2])/100;
+  double A, thresh=atoi(argv[2])/100;
   vector<pt> points=getPoints(argv);
   printStack(points);
   vector<pt> hull=monotone(points);
   printStack(hull);
-
-  double A = getArea(hull);
+  A = getArea(hull);
   cout<<"Area: "<<A<<endl;
 
   //despeckle(points,thresh);
