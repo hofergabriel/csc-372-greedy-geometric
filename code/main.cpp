@@ -10,8 +10,9 @@ Date: October 22, 2020
 #include "debug.cpp"
 #include "monotone.cpp"
 #include "getArea.cpp"
-/*
 
+#include "despeckle.cpp"
+/*
 #include "rosetta_code_graham_correctness.cpp"
 #include "cp_algorithms_graham_correctness.cpp"
 */
@@ -22,15 +23,23 @@ typedef pair<double,double> pt;
 Main
 *********************************************************************/
 int main(int argc, char ** argv){
-  double A, thresh=atoi(argv[2])/100;
+  double A, thresh=(double)atoi(argv[2])/100;
   vector<pt> points=getPoints(argv);
+  vector<pt> des;
+
   printStack(points);
   vector<pt> hull=monotone(points);
   printStack(hull);
   A = getArea(hull);
   cout<<"Area: "<<A<<endl;
 
-  //despeckle(points,thresh);
+  despeckle(points,thresh);
+  hull=monotone(points);
+  printStack(hull);
+
+  
+
+
 }
 
 
