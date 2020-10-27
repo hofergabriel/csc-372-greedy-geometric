@@ -10,6 +10,10 @@ TODO:
 
 *********************************************************************/
 #include <bits/stdc++.h>
+
+#include "rosetta_code_graham_correctness.cpp"
+#include "cp_algorithms_graham_correctness.cpp"
+
 using namespace std;
 
 /*********************************************************************

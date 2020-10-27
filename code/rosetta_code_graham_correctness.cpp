@@ -69,7 +69,7 @@ std::vector<point> convexHull(std::vector<point> p) {
     h.pop_back();
     return h;
 }
- 
+/* 
 int main() {
     using namespace std;
  
@@ -90,3 +90,4 @@ int main() {
  
     return 0;
 }
+*/

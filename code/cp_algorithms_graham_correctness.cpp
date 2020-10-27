@@ -1,6 +1,8 @@
 /*********************************************************************
 https://cp-algorithms.com/geometry/grahams-scan-convex-hull.html
 *********************************************************************/
+#include <vector>
+using namespace std;
 
 struct pt {
     double x, y;
