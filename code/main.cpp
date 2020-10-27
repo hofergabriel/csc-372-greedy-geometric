@@ -3,8 +3,12 @@ Author: Gabriel Hofer
 Instructor: Dr. Rebenitsch
 Course: CSC-372
 Date: October 22, 2020
-*********************************************************************/
 
+TODO: 
+  1. Put polarSort function body in getPoints. 
+  2. write correctness isConvexHull testing function
+
+*********************************************************************/
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -56,7 +60,7 @@ Sort points by polar angle
 *********************************************************************/
 void polarSort(vector<pair<int,int>> &v){
   sort(v.begin(),v.end()); // find v[0]
-  set<pair<float,pair<int,int>>> s;
+  set<pair<double,pair<int,int>>> s;
   for(int i=1;i<v.size();i++) 
     s.insert({atan2(v[i].second-v[0].second,v[i].first-v[0].first),v[i]});
   s.insert({-100,v[0]}); 
@@ -88,43 +92,23 @@ double getArea(const vector<pair<int,int>>& points) {
     pair<int,int> a = i ? points[i - 1] : points.back();
     pair<int,int> b = points[i];
     area+= (a.first-b.first) * (a.second+b.second);
-    cout<<"area: "<<area<<endl;  
   }
   return fabs(area) / 2;
 }
 
 /*********************************************************************
-Main
+Despeckle Images
 *********************************************************************/
-void despeckle(vector<pair<int,int>> & points, const double thresh){
-  double areaBefore=2, areaAfter=1;
-  bool foundSpeckle=true;
-  vector<pair<int,int>> pointsBefore=points, pointsAfter=points, hull=graham(points);
+void despeckle(vector<pair<int,int>> & points, const double thresh){ }
 
-  hull=graham(points);
-  areaBefore=getArea(hull);
+/*********************************************************************
+Despeckle Images
+*********************************************************************/
+bool isConvexHull(vector<pair<int,pair<int,int>>> &v){ 
 
-  while(foundSpeckle){
-    foundSpeckle=false;
-
-    for(int i=0;i<points.size();i++){
-      points.erase(pointsAfter.begin()+i);
-
-      hull = graham(pointsAfter);
-      areaAfter=getArea(hull);
-
-      cout<<"areaBefore: "<<areaBefore<<endl;
-      cout<<"areaAfter : "<<areaAfter<<endl<<endl;
-      if(1.0-(areaAfter/areaBefore)>thresh){
-        foundSpeckle=true;
-        pointsAfter.erase(pointsAfter.begin()+i);
-        break;
-      }
-    }
-    pointsBefore=pointsAfter;
-    printStack(points);
-  }
 }
+
+
 
 
 /*********************************************************************
@@ -135,24 +119,12 @@ int main(int argc, char ** argv){
   double thresh=atoi(argv[2])/100;
   vector<pair<int,int>> points=getPoints(argv);
 
-
   vector<pair<int,int>> cvhull = graham(points);
   double A = getArea(cvhull);
   cout<<"Area: "<<A<<endl;
-  //printStack(cvhull);
 
   despeckle(points,thresh);
-
-
-
-
 }
-
-
-
-
-
-
 
 
 
