@@ -4,18 +4,21 @@ Instructor: Dr. Rebenitsch
 Course: CSC-372
 Date: October 22, 2020
 
+TODO: 
+
 *********************************************************************/
 #include <bits/stdc++.h>
 #include "getPoints.cpp"
 #include "debug.cpp"
 #include "monotone.cpp"
 #include "getArea.cpp"
-
 #include "despeckle.cpp"
+
 /*
 #include "rosetta_code_graham_correctness.cpp"
 #include "cp_algorithms_graham_correctness.cpp"
 */
+
 using namespace std;
 typedef pair<double,double> pt;
 
@@ -32,12 +35,11 @@ int main(int argc, char ** argv){
   printStack(hull);
   A = getArea(hull);
   cout<<"Area: "<<A<<endl;
+  cout<<"hull size: "<<hull.size()<<endl;
 
   despeckle(points,thresh);
   hull=monotone(points);
   printStack(hull);
-
-  
 
 
 }

@@ -1,43 +1,43 @@
 #include <vector>
-typedef pair<double,double> pt; using namespace std;
+typedef pair<double,double> pt; 
+using namespace std;
 
 /*********************************************************************
 Despeckle Images
 *********************************************************************/
-void despeckle(vector<pt> & points, const double thresh){ 
+void despeckle(vector<pt> & pts, const double thresh){ 
   vector<pt> tmp, hull;
+  set<pair<double,int>> mayRemove;
   double a1, a2;
-  bool ok=true;
+  pair<bool,bool> ok={true,false};
 
-  hull=monotone(points);
+  hull=monotone(pts);
   a1=getArea(hull);
 
-  while(points.size()>3 && ok){
-    ok=false;
-    for(int i=0;i<points.size();i++){
-      tmp=points;
+  while(pts.size()>3 && ok.first){
+    ok.first=false;
+    for(int i=0;i<pts.size();i++){
+      tmp=pts;
       tmp.erase(tmp.begin()+i);
       
       hull=monotone(tmp);
       a2=getArea(hull);
 
-
       if(1.0-(a2/a1)>=thresh){ 
-        cout<<"percentage: "<<1.0-(a2/a1)<<endl;
-        cout<<"thresh: "<<thresh<<endl;
-        cout<<"a1: "<<a1<<endl;
-        cout<<"a2: "<<a2<<endl;
-
-
-
-
-        points=tmp;
+        mayRemove.insert({a2,i});
+        pts=tmp;
         a1=a2;
-        ok=true;
-        break; 
       }
     }
+    if(mayRemove.size()){
+      cout<<"Delete pixel at ("<<pts[mayRemove.begin()->second].first
+        <<", "<<pts[mayRemove.begin()->second].second<<")"<<endl;
+      pts.erase(pts.begin()+mayRemove.begin()->second);
+      ok={true,true};
+      mayRemove.clear();
+    }
   }
+  if(!ok.second) cout<<"No pixels deleted."<<endl;
 }
 
 
