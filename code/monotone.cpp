@@ -1,7 +1,16 @@
 #include <algorithm>
 #include <vector>
+#include <iostream>
 using namespace std;
-typedef pair<double,double> pt
+typedef pair<double,double> pt;
+
+void print(vector<pt> v){
+  for(int i=0;i<v.size();i++)
+    cout<<v[i].first<<" "<<v[i].second<<endl;
+  cout<<endl;
+}
+
+
 
 /*********************************************************************
 Compare Lexicographically
@@ -21,32 +30,32 @@ int cp(const pt a, const pt b, const pt c){
 /*********************************************************************
 Convex Hull
 *********************************************************************/
-vector<pt> convexHull(vector<pt> &pts){
+vector<pt> monotone(vector<pt> &pts){
 
-  if(P.size()<=3) return P;
+  if(pts.size()<=3) return pts;
   vector<pt> L, U;
 
   sort(pts.begin(),pts.end(),cmp);
 
   for(int i=0;i<pts.size();i++){
-    while(L.size()>=2 && cp(L[L.size()-2], L.back(), pts[i]))
+    while(L.size()>=2 && cp(L[L.size()-2], L.back(), pts[i]) <= 0)
       L.pop_back();
     L.push_back(pts[i]);
   }
 
-  for(int i=0;i<pts.size();i++){
-    while(U.size()>=2 && cp(U[U.size()-2], U.back(), pts[i]))
+  for(int i=pts.size()-1;i>=0;i--){
+    while(U.size()>=2 && cp(U[U.size()-2], U.back(), pts[i]) <= 0)
       U.pop_back();
     U.push_back(pts[i]);
   }
 
-  L.pop(); U.pop();
+  cout<<"L & U"<<endl;
+  print(L);
+  print(U);
+  L.pop_back(); U.pop_back();
   L.insert(L.end(),U.begin(),U.end());
   return L;
 }
-
-
-
 
 
 
