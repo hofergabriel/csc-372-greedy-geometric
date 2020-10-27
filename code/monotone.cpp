@@ -37,6 +37,7 @@ vector<pt> monotone(vector<pt> &pts){
 
   sort(pts.begin(),pts.end(),cmp);
 
+  // make these two loops a function
   for(int i=0;i<pts.size();i++){
     while(L.size()>=2 && cp(L[L.size()-2], L.back(), pts[i]) <= 0)
       L.pop_back();
@@ -49,9 +50,6 @@ vector<pt> monotone(vector<pt> &pts){
     U.push_back(pts[i]);
   }
 
-  cout<<"L & U"<<endl;
-  print(L);
-  print(U);
   L.pop_back(); U.pop_back();
   L.insert(L.end(),U.begin(),U.end());
   return L;

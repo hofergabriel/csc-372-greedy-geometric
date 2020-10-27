@@ -9,8 +9,8 @@ Date: October 22, 2020
 #include "getPoints.cpp"
 #include "debug.cpp"
 #include "monotone.cpp"
-/*
 #include "getArea.cpp"
+/*
 
 #include "rosetta_code_graham_correctness.cpp"
 #include "cp_algorithms_graham_correctness.cpp"
@@ -28,8 +28,8 @@ int main(int argc, char ** argv){
   vector<pt> hull=monotone(points);
   printStack(hull);
 
-  //double A = getArea(cvhull);
-  //cout<<"Area: "<<A<<endl;
+  double A = getArea(hull);
+  cout<<"Area: "<<A<<endl;
 
   //despeckle(points,thresh);
 }
