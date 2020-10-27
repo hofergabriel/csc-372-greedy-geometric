@@ -5,6 +5,7 @@ Course: CSC-372
 Date: October 22, 2020
 
 TODO: 
+  despeckle
 
 *********************************************************************/
 #include <bits/stdc++.h>
