@@ -115,12 +115,18 @@ number.
 \section*{Question 3}
 
 \begin{center}
-  \begin{tabular}{ | l | c | r | }
+  \begin{tabular}{ | l | l | l | l | l | }
     \hline
-    1 & 2 & 3 \\ \hline
-    4 & 5 & 6 \\ \hline
-    7 & 8 & 9 \\
-    \hline
+    Step & Add/Remove & Segments   & Lines Compared & Intersection? \\ \hline
+    1    & Add A       & A          & NA    & N \\ \hline
+    2    & Add B       & B, A       & -     & N \\ \hline
+    3    & Add C       & B, A, C    & -     & N \\ \hline
+    4    & Add D       & B, D, A, C & -     & N \\ \hline
+    5    & Remove A    & B, D, C    & -     & N \\ \hline
+    6    & Remove B    & D, C       & -     & N \\ \hline
+    7    & Add E       & D, C, E    & -     & N \\ \hline
+    8    & Remove C    & D, E       & -     & N \\ \hline
+    9    & Remove D    & E          & -     & N \\ \hline
   \end{tabular}
 \end{center}
 
