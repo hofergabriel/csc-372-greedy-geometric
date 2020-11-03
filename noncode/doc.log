@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.11.26)  3 NOV 2020 00:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.11.26)  3 NOV 2020 00:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -729,13 +729,13 @@ Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [1] [2] (./doc.aux) ) 
 Here is how much of TeX's memory you used:
- 6334 strings out of 494923
- 84801 string characters out of 6180741
+ 6335 strings out of 494923
+ 84816 string characters out of 6180741
  176254 words of memory out of 5000000
- 9550 multiletter control sequences out of 15000+600000
- 8433 words of font info for 31 fonts, out of 8000000 for 9000
+ 9551 multiletter control sequences out of 15000+600000
+ 8601 words of font info for 32 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 41i,6n,39p,359b,1012s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,6n,39p,359b,1039s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr
 /share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share
 /texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texli
@@ -745,7 +745,7 @@ mf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist
 type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
 ublic/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmtt10.pfb>
-Output written on doc.pdf (3 pages, 105406 bytes).
+Output written on doc.pdf (3 pages, 108164 bytes).
 PDF statistics:
  46 PDF objects out of 1000 (max. 8388607)
  32 compressed objects within 1 object stream

@@ -76,22 +76,39 @@ The subproblems in this problem occur when we add some subset of rods in the tot
 
 Greedy Choice Property: A global optimum can be attained by selecting a local optimum. For this problem, every time we add a rod to the beam we maintain that the current solution is optimal for the subset of rods that have already been added to the beam AND this locally optimal solution will be used to build more globally optimal solutions. 
 
+\newpage
 \noindent \textbf{c. [9 points] Prove correctness of your algorithm. A proof of contradiction is acceptable.}
 \lstset{
-  basicstyle = {\ttfamily},
-  numbers=left
+  basicstyle = {\footnotesize\ttfamily},
 }
 \begin{lstlisting}[frame=single]
 MAKE-BEAM:
-  rods.sortByLength
-  layer:=1
-  while rodsCnt[ layer ] <= rodsCnt[ layer - 1 ] do 
-    rodsCnt[ layer ] += 1
-    if remaintingRodsCnt <= rodsCnt[ layer ] then
-      rodsCnt[ layer ] += remainingRodsCnt
+  layer:=1                                                        
+  while remainingRods.size() > 0  do 
+    beam[ layer ].add(min(remainingRods))   // add shortest rod to beam
+    remainingRods.erase(min(remainingRods)) // remove rod from list
+    rodCnt[ layer ] += 1                    // count rods in this layer
+    if remainingRods.size() <= rodCnt[ layer ] then
+      rodCnt[ layer ] += remainingRods.size()
       break while loop at line 4
-    inc layer
+    inc layer                               // goto next layer
 \end{lstlisting}
+
+\textbf{Proof: } While the length of the current layer is less than or
+equal to the length of the previous layer, add the shortest rod that hasn't 
+been welded to a beam to the current layer. 
+Every time we add a rod to the beam we also have to check whether there 
+are not enough rods to make another layer after the current layer is completed. 
+In order words, if $ remainingRods.size() \le rodCnt[ layer ] $
+(i.e. if the number of rods that haven't been welded to the beam is less than 
+or equal to the number of rods in the current layer), 
+then we simply add all of the 
+remaining rods to the current layer. We do this because otherwise, we would 
+violate the criterion that each layer must have more layers than the 
+previous layer. 
+This will happen every time the number of rods in the set is not a triangle 
+number.
+
 
 
 \section*{Question 3}
