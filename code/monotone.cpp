@@ -9,19 +9,6 @@ https://algorithmist.com/wiki/Monotone_chain_convex_hull
 using namespace std;
 typedef pair<double,double> pt;
 
-void print(vector<pt> v){
-  for(int i=0;i<v.size();i++)
-    cout<<v[i].first<<" "<<v[i].second<<endl;
-  cout<<endl;
-}
-
-/*********************************************************************
-Compare Lexicographically
-*********************************************************************/
-/*bool cmp(pt a, pt b) {
-    return a.first < b.first || (a.first == b.first && a.second < b.second);
-}*/
-
 /*********************************************************************
 Cross Product
 *********************************************************************/
