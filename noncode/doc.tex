@@ -6,6 +6,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{multicol}
+\usepackage{babel}
 
 \usepackage[margin=1in]{geometry}
 \begin{document}
@@ -80,6 +81,7 @@ Greedy Choice Property: A global optimum can be attained by selecting a local op
 \noindent \textbf{c. [9 points] Prove correctness of your algorithm. A proof of contradiction is acceptable.}
 \lstset{
   basicstyle = {\footnotesize\ttfamily},
+  xleftmargin=0in,
 }
 \begin{lstlisting}[frame=single]
 MAKE-BEAM:
@@ -90,7 +92,7 @@ MAKE-BEAM:
     rodCnt[ layer ] += 1                    // count rods in this layer
     if remainingRods.size() <= rodCnt[ layer ] then
       rodCnt[ layer ] += remainingRods.size()
-      break while loop at line 4
+      break while loop 
     inc layer                               // goto next layer
 \end{lstlisting}
 
@@ -110,13 +112,22 @@ This will happen every time the number of rods in the set is not a triangle
 number.
 
 
-
 \section*{Question 3}
-\section*{Question 4}
+
+\begin{center}
+  \begin{tabular}{ | l | c | r | }
+    \hline
+    1 & 2 & 3 \\ \hline
+    4 & 5 & 6 \\ \hline
+    7 & 8 & 9 \\
+    \hline
+  \end{tabular}
+\end{center}
 
 
 
 
 
 \end{document}
+
 
