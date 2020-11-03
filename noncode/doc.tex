@@ -39,11 +39,110 @@
        South Dakota School of Mines and Technology\
    \end{center}
 \end{titlepage}
+\newpage
 %------------------------------------------------------------------------------------
+
+\lstset{
+  basicstyle = {\footnotesize\ttfamily},
+  xleftmargin=0in,
+}
+
+Returns the area enclosed by the polygon formed by convex hull.
+\begin{lstlisting}[frame=single] 
+typedef pair<double,double> pt;
+
+double getArea(const vector<pt>& points) {
+  double area=0;
+  for (int i=0; i<points.size(); i++) {
+    pt a = i ? points[i - 1] : points.back();
+    pt b = points[i];
+    area+= (a.first-b.first) * (a.second+b.second);
+  }
+  return fabs(area) / 2;
+}
+\end{lstlisting}
+
+Monotone Chain algorithm for finding convex hull. Function "cp" is the cross
+product of two vectors. 
+\begin{lstlisting}[frame=single]
+typedef pair<double,double> pt;
+
+int cp(const pt a, const pt b, const pt c){
+  return (b.first - a.first) * (c.second - a.second) - 
+    (b.second - a.second) * (c.first - a.first);
+}
+
+vector<pt> monotone(vector<pt> &pts){
+  if(pts.size()<=3) return pts;
+  vector<pt> L, U;
+  sort(pts.begin(),pts.end());
+  for(int i=0;i<pts.size();i++){
+    while(L.size()>=2 && cp(L[L.size()-2], L.back(), pts[i]) <= 0)
+      L.pop_back();
+    L.push_back(pts[i]);
+  }
+  for(int i=pts.size()-1;i>=0;i--){
+    while(U.size()>=2 && cp(U[U.size()-2], U.back(), pts[i]) <= 0)
+      U.pop_back();
+    U.push_back(pts[i]);
+  }
+  L.pop_back(); U.pop_back();
+  L.insert(L.end(),U.begin(),U.end());
+  return L;
+}
+\end{lstlisting}
+\newpage
+Function "despeckle" removes rogue pixels or "noise". 
+\begin{lstlisting}[frame=single]
+typedef pair<double,double> pt; 
+
+void despeckle(vector<pt> & pts, const double thresh){ 
+  vector<pt> tmp, hull;
+  set<pair<double,int>> mayRemove;
+  double a1, a2;
+  pair<bool,bool> ok={true,false};
+
+  hull=monotone(pts);
+  a1=getArea(hull);
+
+  while(pts.size()>3 && ok.first){
+    ok.first=false;
+    for(int i=0;i<pts.size();i++){
+      tmp=pts;
+      tmp.erase(tmp.begin()+i);
+      
+      hull=monotone(tmp);
+      a2=getArea(hull);
+
+      if(1.0-(a2/a1)>=thresh){ 
+        mayRemove.insert({a2,i});
+        pts=tmp;
+        a1=a2;
+      }
+    }
+    if(mayRemove.size()){
+      cout<<"Delete pixel at ("<<pts[mayRemove.begin()->second].first
+        <<", "<<pts[mayRemove.begin()->second].second<<")"<<endl;
+      pts.erase(pts.begin()+mayRemove.begin()->second);
+      ok={true,true};
+      mayRemove.clear();
+    }
+  }
+  if(!ok.second) cout<<"No pixels deleted."<<endl;
+}
+
+\end{lstlisting}
+
+
+
+
+
+
+
 \newpage
 %\footnotesize
 \small
-\section*{Question 1}
+\subsection*{Question 1}
 \indent 
 \par
 The recursive calls of the closest points function form a binary tree because the set of points is 
@@ -51,9 +150,11 @@ divided in half and two recursive calls are made: one for the right half and one
 After those calls have returned, we know the closest pair of points in each half of the set. 
 
 So, in order to make a dendogram, we simply need to show the structure of the recursive calls by 
-creating a single node for the current recursive call. Then we add two edges connecting each half 
-of the set to the current node or function call. Also, note that the base case probably connects two
-actual points to each other, although this is slightly implementation dependent.
+creating a single node in each recursive function call. 
+
+Then we add edges connecting each parent call to each of their two children recursive calls. 
+Also, note that the base case probably connects two actual points to each other, 
+although this is slightly implementation dependent.
 
 \begin{verbatim}
 1. Sort the points from smallest to largest x coordinate (X)
@@ -66,12 +167,18 @@ actual points to each other, although this is slightly implementation dependent.
      the distance between the closest points from both halves.
   b. check the nearby points that could be closer (there are only 7 max)
   c. update the minimum pair 
+  // Dendogram Part
+6. Create a Node 
+  a. Add an edge between this Node and the node returned from 
+     the left-half recursive call.
+  b. Add an edge between this Node and the node returned from 
+     the right-half recursive call.
 \end{verbatim}
 
-\section*{Question 2}
+\subsection*{Question 2}
 \textbf{a. [5 points] What is the optimal substructure (you must name the specific item being removed)?}
 
-The subproblems in this problem occur when we add some subset of rods in the total set of rods that we have available $SomeRods \subset AllRods$ to the beam. Also, in our algorithm, we always add the smallest rod to the beam. Thus, $SomeRodswill$ contain the first $SomeRods.size$ smallest rods from the set of all rods $AllRods$. 
+The subproblems in this problem occur when we add some subset of rods in the total set of rods that we have available $SomeRods \subset AllRods$ to the beam. Also, in our algorithm, we always add the smallest rod to the beam. Thus, $SomeRods$ will contain the first $SomeRods.size$ smallest rods from the set of all rods $AllRods$. 
 
 \noindent \textbf{b. [6 points] What is the greedy property? }
 
@@ -91,8 +198,9 @@ MAKE-BEAM:
     remainingRods.erase(min(remainingRods)) // remove rod from list
     rodCnt[ layer ] += 1                    // count rods in this layer
     if remainingRods.size() <= rodCnt[ layer ] then
+      beam[ layer ].add(remainingRods)      // add all rods to the beam
+      remainingRods.clear()                 // remove all rods 
       rodCnt[ layer ] += remainingRods.size()
-      break while loop 
     inc layer                               // goto next layer
 \end{lstlisting}
 
@@ -112,7 +220,7 @@ This will happen every time the number of rods in the set is not a triangle
 number.
 
 
-\section*{Question 3}
+\subsection*{Question 3}
 
 \begin{center}
   \begin{tabular}{ | l | l | l | l | l | }
