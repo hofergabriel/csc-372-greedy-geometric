@@ -1,0 +1,105 @@
+
+\documentclass[12pt]{article}
+\usepackage{listings}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{multicol}
+
+\usepackage[margin=1in]{geometry}
+\begin{document}
+\begin{titlepage}
+   \begin{center}
+       \vspace*{1cm}
+       \Large
+       AoA Programming Assignment 3
+       \normalsize
+
+       \vspace{0.5cm}
+
+       Author: Gabriel Hofer
+
+       \vspace{0.5cm}
+
+       Course: CSC-372
+
+       \vspace{0.5cm}
+
+       Instructor: Dr. Rebenitsch
+       \vspace{0.5cm}
+
+       Due: November 5, 2020
+
+       \vfill
+
+       Computer Science and Engineering\
+
+       South Dakota School of Mines and Technology\
+   \end{center}
+\end{titlepage}
+%------------------------------------------------------------------------------------
+\newpage
+%\footnotesize
+\small
+\section*{Question 1}
+\indent 
+\par
+The recursive calls of the closest points function form a binary tree because the set of points is 
+divided in half and two recursive calls are made: one for the right half and one for the left. 
+After those calls have returned, we know the closest pair of points in each half of the set. 
+
+So, in order to make a dendogram, we simply need to show the structure of the recursive calls by 
+creating a single node for the current recursive call. Then we add two edges connecting each half 
+of the set to the current node or function call. Also, note that the base case probably connects two
+actual points to each other, although this is slightly implementation dependent.
+
+\begin{verbatim}
+1. Sort the points from smallest to largest x coordinate (X)
+2. Sort the points from smallest to largest y coordinate (Y)
+3. Evenly divide the set of points into "left" and "right" sets (both X and Y!)
+4. Repeat division recursively until there are only 2 points
+5. To merge, the closest pair of points is either the closest pair 
+   returned from both sides or is across the split boundary as follows:
+  a. find all the Y points within d of the split line where d is 
+     the distance between the closest points from both halves.
+  b. check the nearby points that could be closer (there are only 7 max)
+  c. update the minimum pair 
+\end{verbatim}
+
+\section*{Question 2}
+\textbf{a. [5 points] What is the optimal substructure (you must name the specific item being removed)?}
+
+The subproblems in this problem occur when we add some subset of rods in the total set of rods that we have available $SomeRods \subset AllRods$ to the beam. Also, in our algorithm, we always add the smallest rod to the beam. Thus, $SomeRodswill$ contain the first $SomeRods.size$ smallest rods from the set of all rods $AllRods$. 
+
+\noindent \textbf{b. [6 points] What is the greedy property? }
+
+Greedy Choice Property: A global optimum can be attained by selecting a local optimum. For this problem, every time we add a rod to the beam we maintain that the current solution is optimal for the subset of rods that have already been added to the beam AND this locally optimal solution will be used to build more globally optimal solutions. 
+
+\noindent \textbf{c. [9 points] Prove correctness of your algorithm. A proof of contradiction is acceptable.}
+\lstset{
+  basicstyle = {\ttfamily},
+  numbers=left
+}
+\begin{lstlisting}[frame=single]
+MAKE-BEAM:
+  rods.sortByLength
+  layer:=1
+  while rodsCnt[ layer ] <= rodsCnt[ layer - 1 ] do 
+    rodsCnt[ layer ] += 1
+    if remaintingRodsCnt <= rodsCnt[ layer ] then
+      rodsCnt[ layer ] += remainingRodsCnt
+      break while loop at line 4
+    inc layer
+\end{lstlisting}
+
+
+\section*{Question 3}
+\section*{Question 4}
+
+
+
+
+
+\end{document}
+
