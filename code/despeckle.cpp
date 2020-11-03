@@ -23,16 +23,19 @@ void despeckle(vector<pt> & pts, const double thresh){
       hull=monotone(tmp);
       a2=getArea(hull);
 
-      if(1.0-(a2/a1)>=thresh){ 
+      if(1.0-(a2/a1)>=thresh)
         mayRemove.insert({a2,i});
-        pts=tmp;
-        a1=a2;
-      }
+
+      tmp=pts;
+      a1=a2;
     }
     if(mayRemove.size()){
+      //cout<<"BEFORE pts.size(): "<<pts.size()<<endl;
+      
       cout<<"Delete pixel at ("<<pts[mayRemove.begin()->second].first
         <<", "<<pts[mayRemove.begin()->second].second<<")"<<endl;
       pts.erase(pts.begin()+mayRemove.begin()->second);
+      //cout<<"AFTER pts.size(): "<<pts.size()<<endl;
       ok={true,true};
       mayRemove.clear();
     }

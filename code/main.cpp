@@ -6,6 +6,7 @@ Date: October 22, 2020
 
 TODO: 
   despeckle
+  write test functions
 
 *********************************************************************/
 #include <bits/stdc++.h>
@@ -14,7 +15,9 @@ TODO:
 #include "monotone.cpp"
 #include "getArea.cpp"
 #include "despeckle.cpp"
+#include "test.cpp"
 
+// #include "graham_hofer.cpp"
 /*
 #include "rosetta_code_graham_correctness.cpp"
 #include "cp_algorithms_graham_correctness.cpp"
@@ -28,22 +31,16 @@ Main
 *********************************************************************/
 int main(int argc, char ** argv){
   double A, thresh=(double)atoi(argv[2])/100;
+
   vector<pt> points=getPoints(argv);
-  vector<pt> des;
-
-  printStack(points);
-  vector<pt> hull=monotone(points);
-  printStack(hull);
-  A = getArea(hull);
-  cout<<"Area: "<<A<<endl;
-  cout<<"hull size: "<<hull.size()<<endl;
-
   despeckle(points,thresh);
-  hull=monotone(points);
-  printStack(hull);
+  printStack(points);
 
-
+  // test();
 }
+
+
+
 
 
 
