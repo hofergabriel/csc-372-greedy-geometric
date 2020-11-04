@@ -8,6 +8,8 @@
 \usepackage{multicol}
 \usepackage{babel}
 \usepackage{graphicx}
+%\usepackage{tgbonum}
+\usepackage{mathptmx}
 
 \usepackage[margin=1in]{geometry}
 \begin{document}
@@ -135,14 +137,8 @@ void despeckle(vector<pt> & pts, const double thresh){
 \end{lstlisting}
 
 
-
-
-
-
-
+%-----------------------------------------------------------
 \newpage
-%\footnotesize
-\small
 \subsection*{Question 1}
 \indent 
 \par
@@ -158,30 +154,31 @@ Also, note that the base case probably connects two actual points to each other,
 although this is slightly implementation dependent.
 
 \begin{verbatim}
-1. Sort the points from smallest to largest x coordinate (X)
-2. Sort the points from smallest to largest y coordinate (Y)
-3. Evenly divide the set of points into "left" and "right" sets (both X and Y!)
-4. Repeat division recursively until there are only 2 points
-5. To merge, the closest pair of points is either the closest pair 
-   returned from both sides or is across the split boundary as follows:
-  a. find all the Y points within d of the split line where d is 
-     the distance between the closest points from both halves.
-  b. check the nearby points that could be closer (there are only 7 max)
-  c. update the minimum pair 
-  // Dendogram Part
-6. Create a Node 
-  a. Add an edge between this Node and the node returned from 
-     the left-half recursive call.
-  b. Add an edge between this Node and the node returned from 
-     the right-half recursive call.
+CLOSEST-PAIR-OF-POINTS:
+	1. Sort the points from smallest to largest x coordinate (X)
+	2. Sort the points from smallest to largest y coordinate (Y)
+	3. Evenly divide the set of points into "left" and "right" sets (both X and Y!)
+	4. Repeat division recursively until there are only 2 points
+	5. To merge, the closest pair of points is either the closest pair 
+	   returned from both sides or is across the split boundary as follows:
+	  a. find all the Y points within d of the split line where d is 
+	     the distance between the closest points from both halves.
+	  b. check the nearby points that could be closer (there are only 7 max)
+	  c. update the minimum pair 
+	  // Dendogram Part
+	6. Create a Node 
+	  a. Add an edge between this Node and the node returned from 
+	     the left-half recursive call.
+	  b. Add an edge between this Node and the node returned from 
+	     the right-half recursive call.
 \end{verbatim}
 
 \subsection*{Question 2}
-\textbf{a. [5 points] What is the optimal substructure (you must name the specific item being removed)?}
+\textbf{a. [5 points] What is the optimal substructure (you must name the specific item being removed)?} \\
 
-The subproblems in this problem occur when we add some subset of rods in the total set of rods that we have available $SomeRods \subset AllRods$ to the beam. Also, in our algorithm, we always add the smallest rod to the beam. Thus, $SomeRods$ will contain the first $SomeRods.size$ smallest rods from the set of all rods $AllRods$. 
+The subproblems in this problem occur when we add some subset of rods in the total set of rods that we have available $SomeRods \subset AllRods$ to the beam. Also, in our algorithm, we always add the smallest rod to the beam. Thus, $SomeRods$ will contain the first $SomeRods.size$ smallest rods from the set of all rods $AllRods$.  \\
 
-\noindent \textbf{b. [6 points] What is the greedy property? }
+\noindent \textbf{b. [6 points] What is the greedy property? } \\
 
 Greedy Choice Property: A global optimum can be attained by selecting a local optimum. For this problem, every time we add a rod to the beam we maintain that the current solution is optimal for the subset of rods that have already been added to the beam AND this locally optimal solution will be used to build more globally optimal solutions. 
 
@@ -222,20 +219,22 @@ number.
 
 
 \subsection*{Question 4}
-
 \begin{center}
   \begin{tabular}{ | l | l | l | l | l | }
     \hline
     Step & Add/Remove & Segments   & Lines Compared & Intersection? \\ \hline
     1    & Add A       & A          & NA    & N \\ \hline
-    2    & Add B       & B, A       & -     & N \\ \hline
-    3    & Add C       & B, A, C    & -     & N \\ \hline
-    4    & Add D       & B, D, A, C & -     & N \\ \hline
-    5    & Remove A    & B, D, C    & -     & N \\ \hline
-    6    & Remove B    & D, C       & -     & N \\ \hline
-    7    & Add E       & D, C, E    & -     & N \\ \hline
-    8    & Remove C    & D, E       & -     & N \\ \hline
-    9    & Remove D    & E          & -     & N \\ \hline
+		2    & Add B       & B, A       & A\&B    & N \\ \hline
+		3    & Add C       & B, A, C    & A\&B, A\&C, B\&C & N \\ \hline
+		4    & Add D       & B, D, A, C & A\&B, A\&C, A\&D, B\&C, B\&D, C\&D & N \\ \hline
+		5    & Remove A    & B, D, C    & B\&C, B\&D, C\&D & N \\ \hline
+		6    & Remove B    & D, C       & C\&D     & N \\ \hline
+		7    & Add E       & D, C, E    & C\&D, C\&E, D\&E     & N \\ \hline
+		8    & Remove C    & D, E       & D\&E     & N \\ \hline
+    9    & Remove D    & E          & NA     & N \\ \hline
+		10   & Add G			 & E, G       & E\&G     & N \\ \hline
+		11   & Add F			 & E, G, F    & E\&F, E\&G, F\&G     & N \\ \hline
+		12   & Add H	  	 & E, G, F, H & E\&G, E\&F, E\&H, G\&F, G\&H, F\&H & Y \\ \hline
   \end{tabular}
 \end{center}
 
