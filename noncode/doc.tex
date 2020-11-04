@@ -173,6 +173,7 @@ CLOSEST-PAIR-OF-POINTS:
 	     the right-half recursive call.
 \end{verbatim}
 
+\newpage
 \subsection*{Question 2}
 \textbf{a. [5 points] What is the optimal substructure (you must name the specific item being removed)?} \\
 
@@ -182,7 +183,6 @@ The subproblems in this problem occur when we add some subset of rods in the tot
 
 Greedy Choice Property: A global optimum can be attained by selecting a local optimum. For this problem, every time we add a rod to the beam we maintain that the current solution is optimal for the subset of rods that have already been added to the beam AND this locally optimal solution will be used to build more globally optimal solutions. 
 
-\newpage
 \noindent \textbf{c. [9 points] Prove correctness of your algorithm. A proof of contradiction is acceptable.}
 \lstset{
   basicstyle = {\footnotesize\ttfamily},
@@ -197,13 +197,15 @@ MAKE-BEAM:
     rodCnt[ layer ] += 1                    // count rods in this layer
     if remainingRods.size() <= rodCnt[ layer ] then
       beam[ layer ].add(remainingRods)      // add all rods to the beam
-      remainingRods.clear()                 // remove all rods 
       rodCnt[ layer ] += remainingRods.size()
-    inc layer                               // goto next layer
+      remainingRods.clear()                 // remove all rods 
+      break while loop
+    if rodCnt[ layer ] > rodCnt[ layer - 1 ]
+      inc layer                             // goto next layer
 \end{lstlisting}
 
-\textbf{Proof: } While the length of the current layer is less than or
-equal to the length of the previous layer, add the shortest rod that hasn't 
+While the length of the current layer is less than or equal to the 
+length of the previous layer, add the shortest rod that hasn't 
 been welded to a beam to the current layer. 
 Every time we add a rod to the beam we also have to check whether there 
 are not enough rods to make another layer after the current layer is completed. 
@@ -217,6 +219,23 @@ previous layer.
 This will happen every time the number of rods in the set is not a triangle 
 number.
 
+\noindent As a reminder there are two loop invariants which must be maintained in order for this 
+algorithm to be correct: 
+\begin{enumerate}
+  \item The total summed length of rods in the $i^{th}$ layer must be less than $(i +1)^{th} $layer.
+  \item The total number of rodsin the $i^{th}$ layer is less than the $(i +1)^{th}$ layer.
+\end{enumerate}
+
+
+\textbf{Initialization:} at initialization, there are zero rods welded to the beam, so both criteria are met. \\
+\textbf{Maintenance:} 
+\\
+\textbf{Termination:} \\
+
+
+There are two cases, one for each criterion.
+First, assume that the number of rods in layer i is not greater than 
+the sum of rods in layer i-1. This is impossible because 
 
 \subsection*{Question 4}
 \begin{center}
