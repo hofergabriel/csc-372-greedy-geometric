@@ -1,11 +1,12 @@
-#include <vector>
 typedef pair<double,double> pt;
 
-bool ccw(pt a, pt b, pt c) {
+
+double ccw(const pt a, const pt b, const pt c) {
   return a.first*(b.second-c.second)+
     b.first*(c.second-a.second)+
     c.first*(a.second-b.second);
 }
+
 
 /*********************************************************************
 Sort points by polar angle

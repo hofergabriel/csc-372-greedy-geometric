@@ -1,6 +1,3 @@
-#include <vector>
-using namespace std;
-typedef pair<double,double> pt;
 /*********************************************************************
 https://cp-algorithms.com/geometry/area-of-simple-polygon.html
 *********************************************************************/

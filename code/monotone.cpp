@@ -3,11 +3,6 @@ Author: Gabriel Hofer
 https://algorithmist.com/wiki/Monotone_chain_convex_hull
 *********************************************************************/
 
-#include <algorithm>
-#include <vector>
-#include <iostream>
-using namespace std;
-typedef pair<double,double> pt;
 
 /*********************************************************************
 Cross Product
