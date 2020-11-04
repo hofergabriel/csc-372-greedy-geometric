@@ -161,16 +161,16 @@ CLOSEST-PAIR-OF-POINTS:
 	4. Repeat division recursively until there are only 2 points
 	5. To merge, the closest pair of points is either the closest pair 
 	   returned from both sides or is across the split boundary as follows:
-	  a. find all the Y points within d of the split line where d is 
-	     the distance between the closest points from both halves.
-	  b. check the nearby points that could be closer (there are only 7 max)
-	  c. update the minimum pair 
-	  // Dendogram Part
-	6. Create a Node 
-	  a. Add an edge between this Node and the node returned from 
-	     the left-half recursive call.
-	  b. Add an edge between this Node and the node returned from 
-	     the right-half recursive call.
+   a. find all the Y points within d of the split line where d is 
+      the distance between the closest points from both halves.
+   b. check the nearby points that could be closer (there are only 7 max)
+   c. update the minimum pair 
+// Dendogram Part
+6. Create a Node 
+   a. Add an edge between this Node and the node returned from 
+      the left-half recursive call.
+   b. Add an edge between this Node and the node returned from 
+      the right-half recursive call.
 \end{verbatim}
 
 \newpage
@@ -181,13 +181,14 @@ The subproblems in this problem occur when we add some subset of rods in the tot
 
 \noindent \textbf{b. [6 points] What is the greedy property? } \\
 
-Greedy Choice Property: A global optimum can be attained by selecting a local optimum. For this problem, every time we add a rod to the beam we maintain that the current solution is optimal for the subset of rods that have already been added to the beam AND this locally optimal solution will be used to build more globally optimal solutions. 
+Greedy Choice Property: A global optimum can be attained by selecting a local optimum. For this problem, every time we add a rod to the beam we maintain that the current solution is optimal for the subset of rods that have already been added to the beam AND this locally optimal solution will be used to build more globally optimal solutions.  \\
 
 \noindent \textbf{c. [9 points] Prove correctness of your algorithm. A proof of contradiction is acceptable.}
 \lstset{
   basicstyle = {\footnotesize\ttfamily},
   xleftmargin=0in,
-}
+} 
+
 \begin{lstlisting}[frame=single]
 MAKE-BEAM:
   layer:=1                                                        
@@ -202,7 +203,7 @@ MAKE-BEAM:
       break while loop
     if rodCnt[ layer ] > rodCnt[ layer - 1 ]
       inc layer                             // goto next layer
-\end{lstlisting}
+\end{lstlisting} 
 
 While the length of the current layer is less than or equal to the 
 length of the previous layer, add the shortest rod that hasn't 
@@ -218,24 +219,6 @@ violate the criterion that each layer must have more layers than the
 previous layer. 
 This will happen every time the number of rods in the set is not a triangle 
 number.
-
-\noindent As a reminder there are two loop invariants which must be maintained in order for this 
-algorithm to be correct: 
-\begin{enumerate}
-  \item The total summed length of rods in the $i^{th}$ layer must be less than $(i +1)^{th} $layer.
-  \item The total number of rodsin the $i^{th}$ layer is less than the $(i +1)^{th}$ layer.
-\end{enumerate}
-
-
-\textbf{Initialization:} at initialization, there are zero rods welded to the beam, so both criteria are met. \\
-\textbf{Maintenance:} 
-\\
-\textbf{Termination:} \\
-
-
-There are two cases, one for each criterion.
-First, assume that the number of rods in layer i is not greater than 
-the sum of rods in layer i-1. This is impossible because 
 
 \subsection*{Question 4}
 \begin{center}
@@ -261,14 +244,6 @@ the sum of rods in layer i-1. This is impossible because
 \subsection*{Question 3}
 
 \includegraphics[scale=.4]{/home/gabe/Pictures/aoa_p3_q3.png}
-
-
-
-
-
-
-
-
 
 
 \end{document}
