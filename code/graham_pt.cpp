@@ -1,5 +1,3 @@
-typedef pair<double,double> pt;
-
 
 double ccw(const pt a, const pt b, const pt c) {
   return a.first*(b.second-c.second)+

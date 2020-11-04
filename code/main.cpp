@@ -3,14 +3,11 @@ Author: Gabriel Hofer
 Instructor: Dr. Rebenitsch
 Course: CSC-372
 Date: November 5, 2020
-
-TODO: 
-  write test functions
-
 *********************************************************************/
 #include <bits/stdc++.h>
 #include <utility>
 using namespace std;
+typedef pair<double,double> pt;
 
 #include "graham_pt.cpp"
 #include "getPoints.cpp"
@@ -20,12 +17,6 @@ using namespace std;
 #include "despeckle.cpp"
 #include "test.cpp"
 
-/*
-#include "rosetta_code_graham_correctness.cpp"
-#include "cp_algorithms_graham_correctness.cpp"
-*/
-
-typedef pair<double,double> pt;
 
 /*********************************************************************
 Main

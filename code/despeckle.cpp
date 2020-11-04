@@ -8,14 +8,6 @@ void despeckle(vector<pt> & pts, const double thresh, const char option){
   double a1, a2;
   pair<bool,bool> ok={true,false};
 
-  /*switch(option){
-    case 'g': 
-      hull=graham(pts);
-      cout<<"1"<<endl;
-    default: 
-      hull=monotone(pts);
-      cout<<"2"<<endl;
-  }*/
   hull=monotone(pts);
   a1=getArea(hull);
 
@@ -25,18 +17,8 @@ void despeckle(vector<pt> & pts, const double thresh, const char option){
       tmp=pts;
       tmp.erase(tmp.begin()+i);
       
-      /*switch(option){
-        case 'g': 
-          hull=graham(pts);
-          cout<<"3"<<endl;
-        default: 
-          hull=monotone(pts);
-          cout<<"4"<<endl;
-      }*/
       hull=monotone(tmp);
       a2=getArea(hull);
-
-      //cout<<"1-a2/a1: "<<1.0-(a2/a1)<<endl;
 
       if(1.0-(a2/a1)>=thresh)
         mayRemove.insert({a2,i});
