@@ -2,7 +2,7 @@
 Despeckle Images 
 Author: Gabriel Hofer
 *********************************************************************/
-void despeckle(vector<pt> & pts, const double thresh, const char option){ 
+void despeckle(vector<pt> & pts, const double thresh){ 
   vector<pt> tmp, hull;
   set<pair<double,int>> mayRemove;
   double a1, a2;
