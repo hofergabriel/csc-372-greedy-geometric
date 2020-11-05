@@ -8,8 +8,8 @@
 \usepackage{multicol}
 \usepackage{babel}
 \usepackage{graphicx}
-%\usepackage{tgbonum}
-\usepackage{mathptmx}
+\usepackage{tgbonum}
+%\usepackage{mathptmx}
 
 \usepackage[margin=1in]{geometry}
 \begin{document}
@@ -44,114 +44,20 @@
 \end{titlepage}
 \newpage
 %------------------------------------------------------------------------------------
-
-\lstset{
-  basicstyle = {\footnotesize\ttfamily},
-  xleftmargin=0in,
-}
-
-Returns the area enclosed by the polygon formed by convex hull.
-\begin{lstlisting}[frame=single] 
-typedef pair<double,double> pt;
-
-double getArea(const vector<pt>& points) {
-  double area=0;
-  for (int i=0; i<points.size(); i++) {
-    pt a = i ? points[i - 1] : points.back();
-    pt b = points[i];
-    area+= (a.first-b.first) * (a.second+b.second);
-  }
-  return fabs(area) / 2;
-}
-\end{lstlisting}
-
-Monotone Chain algorithm for finding convex hull. Function "cp" is the cross
-product of two vectors. 
-\begin{lstlisting}[frame=single]
-typedef pair<double,double> pt;
-
-int cp(const pt a, const pt b, const pt c){
-  return (b.first - a.first) * (c.second - a.second) - 
-    (b.second - a.second) * (c.first - a.first);
-}
-
-vector<pt> monotone(vector<pt> &pts){
-  if(pts.size()<=3) return pts;
-  vector<pt> L, U;
-  sort(pts.begin(),pts.end());
-  for(int i=0;i<pts.size();i++){
-    while(L.size()>=2 && cp(L[L.size()-2], L.back(), pts[i]) <= 0)
-      L.pop_back();
-    L.push_back(pts[i]);
-  }
-  for(int i=pts.size()-1;i>=0;i--){
-    while(U.size()>=2 && cp(U[U.size()-2], U.back(), pts[i]) <= 0)
-      U.pop_back();
-    U.push_back(pts[i]);
-  }
-  L.pop_back(); U.pop_back();
-  L.insert(L.end(),U.begin(),U.end());
-  return L;
-}
-\end{lstlisting}
-\newpage
-Function "despeckle" removes rogue pixels or "noise". 
-\begin{lstlisting}[frame=single]
-typedef pair<double,double> pt; 
-
-void despeckle(vector<pt> & pts, const double thresh){ 
-  vector<pt> tmp, hull;
-  set<pair<double,int>> mayRemove;
-  double a1, a2;
-  pair<bool,bool> ok={true,false};
-
-  hull=monotone(pts);
-  a1=getArea(hull);
-
-  while(pts.size()>3 && ok.first){
-    ok.first=false;
-    for(int i=0;i<pts.size();i++){
-      tmp=pts;
-      tmp.erase(tmp.begin()+i);
-      
-      hull=monotone(tmp);
-      a2=getArea(hull);
-
-      if(1.0-(a2/a1)>=thresh){ 
-        mayRemove.insert({a2,i});
-        pts=tmp;
-        a1=a2;
-      }
-    }
-    if(mayRemove.size()){
-      cout<<"Delete pixel at ("<<pts[mayRemove.begin()->second].first
-        <<", "<<pts[mayRemove.begin()->second].second<<")"<<endl;
-      pts.erase(pts.begin()+mayRemove.begin()->second);
-      ok={true,true};
-      mayRemove.clear();
-    }
-  }
-  if(!ok.second) cout<<"No pixels deleted."<<endl;
-}
-
-\end{lstlisting}
-
-
-%-----------------------------------------------------------
+%------------------------------------------------------------------------------------
+\footnotesize
 \newpage
 \subsection*{Question 1}
-\indent 
-\par
+
+\textbf{1. [12pt] Describe, in pseudocode, how to make an algorithm using closest pair of points 
+algorithm to make a dendogram} \\
+
 The recursive calls of the closest points function form a binary tree because the set of points is 
-divided in half and two recursive calls are made: one for the right half and one for the left. 
+divided in half and two recursive calls are made: one for the right half and one for the left half. 
 After those calls have returned, we know the closest pair of points in each half of the set. 
-
-So, in order to make a dendogram, we simply need to show the structure of the recursive calls by 
-creating a single node in each recursive function call. 
-
-Then we add edges connecting each parent call to each of their two children recursive calls. 
-Also, note that the base case probably connects two actual points to each other, 
-although this is slightly implementation dependent.
+So, in order to make a dendogram, we simply need to show the structure of the recursive function calls by 
+creating a single node in each function call. 
+Then we add edges connecting each parent call to each of their two children (left and right) recursive calls. 
 
 \begin{verbatim}
 CLOSEST-PAIR-OF-POINTS:
@@ -171,18 +77,29 @@ CLOSEST-PAIR-OF-POINTS:
       the left-half recursive call.
    b. Add an edge between this Node and the node returned from 
       the right-half recursive call.
-\end{verbatim}
+\end{verbatim} 
+
+\textbf{2. [8pt] What is the run time of your algorithm? Prove, mathematically, what would
+the run time be for your algorithm?} \\
+
+The number of nodes in the tree is proportional to the number of function calls or nodes
+created in the dendogram. If there are $N$ points, then there are $N log(N)$ function calls. 
+The runtime of this algorithm is the same as building a binary tree. Creating 
+each node and edge in the dendogram costs $O(1)$. So the runtime of our algorithm is the following: 
+\[
+  T(N) = O(N \cdot log(N))
+\]
 
 \subsection*{Question 2}
 \textbf{a. [5 points] What is the optimal substructure (you must name the specific item being removed)?} \\
 
-The subproblems in this problem occur when we add some subset of rods in the total set of rods that we have available $SomeRods \subset AllRods$ to the beam. Also, in our algorithm, we always add the smallest rod to the beam. Thus, $SomeRods$ will contain the first $SomeRods.size$ smallest rods from the set of all rods $AllRods$.  \\
-
-\noindent \textbf{b. [6 points] What is the greedy property? } \\
-
-Greedy Choice Property: A global optimum can be attained by selecting a local optimum. For this problem, every time we add a rod to the beam we maintain that the current solution is optimal for the subset of rods that have already been added to the beam AND this locally optimal solution will be used to build more globally optimal solutions.  \\
+The subproblems in this problem occur when we add some subset of rods to the beam from the total set of rods that we have available. Also, in our algorithm, we always add the smallest unwelded rod to the beam. Thus, $SomeRods$ will contain the first $SomeRods.size$ smallest rods from the set of all rods $AllRods$.  \\
 
 \newpage
+\noindent \textbf{b. [6 points] What is the greedy property? } \\
+
+Greedy Choice Property: A global optimum can be attained by selecting a local optimum. For this problem, every time we add a rod to the beam we maintain that the current solution is optimal for the subset of rods that have already been added to the beam AND this locally optimal solution will be used to build more globally optimal solutions. Thus, always adding the smallest rod to the current layer is both locally optimal and globally optimal. \\
+
 \noindent \textbf{c. [9 points] Prove correctness of your algorithm. A proof of contradiction is acceptable.}
 \lstset{
   basicstyle = {\footnotesize\ttfamily},
@@ -205,46 +122,45 @@ MAKE-BEAM:
       inc layer                             // goto next layer
 \end{lstlisting} 
 
-Criteria:
+\noindent \textbf{Proof: } 
+The loop invariants are the two criteria stated in the problem statement.
 \begin{enumerate}
-  \item The total number of rods in the $i^{th}$ layer must be less than the
-    total number of rods in the $(i+1)^{th}$ layer.
   \item The totals summed length of rods in the $i^{th}$ layer must be less
     than the total summed length of rods in the $(i+1)^{th}$ layer.
+  \item The total number of rods in the $i^{th}$ layer must be less than the
+    total number of rods in the $(i+1)^{th}$ layer.
 \end{enumerate}
 
-While the length of the current layer is less than or equal to the 
-length of the previous layer, add the shortest rod that hasn't 
-been welded to a beam to the current layer. 
-Every time we add a rod to the beam we also have to check whether there 
-are not enough rods to make another layer after the current layer is completed. 
-In order words, if $ remainingRods.size() \le rodCnt[ layer ] $
-(i.e. if the number of rods that haven't been welded to the beam is less than 
-or equal to the number of rods in the current layer), 
-then we simply add all of the 
-remaining rods to the current layer. We do this because otherwise, we would 
-violate the criterion that each layer must have more layers than the 
-previous layer. 
-This will happen every time the number of rods in the set is not a triangle 
-number.
+\noindent \textbf{Initialization: } Before adding any rods, there is only one layer - the criteria require two layers. \\
+\noindent \textbf{Maintenance: } $L$ is the current layer. $rodCnt[ L ]$ is the number of rods in layer $L$. 
+We know that layer $L+1$ won't be started if it can't be completed. In other words, layer $L+1$ won't 
+be started unless we know that there are at least $L+1$ remaining/unwelded rods. 
+Also, rods are added to layer $L$ while $rodCnt[ L ] > rodCnt[ L-1 ]$ which maintaines the 
+second criterion.
+Given that the second criterion is maintained, the first criterion is also met since we also always 
+add the shortest remaining rod to the beam:
+\[ 
+avgRodLength[ L-1 ] * rodCnt[ L-1 ] < avgRodLength[ L ] * rodCnt[ L ] 
+\]
+It follows that, 
+\[
+    summedRods[ L-1 ] < summedRods[ L ]
+\]
 
-The criterion that the length of layer $i+1$ must be greater than the length of 
-layer $i$ is met if the first criterion is met and if we also pick the shortest
-unwelded rod to add to the current layer. we know this because even if all
-of the rods are the same length, 
-\[ L \cdot rodCnt[layer] < L \cdot rodCnt[layer+1] \] where $L$ is the length of each rod.
-
+\noindent \textbf{Termination: }  Also, each layer $L+1$ contains more rods than layer $L$. 
+And, since all rods are welded to the beam in non-decreasing order, the summed length of rods
+in layer $L+1$ is greater than the summed length of rods in layer $L$.
 
 %-------------------------------------------------------------
 \newpage
 \subsection*{Question 3}
 \textbf{``points''} denote all of the points in the set. Each set
 is essentially divided in half. If the size of the set has an odd parity, then the 
-middle element is put in the left-hand set. \textbf{closest} represents the closest
+middle element is put in the left-hand set. \textbf{``closest''} represents the closest
 pair of points in the set of \textbf{points}. It is the pair of points that is 
-``returned''.
+``returned''. \\ \\
 
-\includegraphics[scale=.4]{/home/gabe/Pictures/aoa_p3_q3.png}
+\includegraphics[scale=.35]{/home/gabe/Pictures/tree-aoa.png}
 
 %-------------------------------------------------------------
 \subsection*{Question 4}
