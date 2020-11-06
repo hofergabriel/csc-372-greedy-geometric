@@ -135,7 +135,7 @@ The loop invariants are the two criteria stated in the problem statement.
 \noindent \textbf{Maintenance: } $L$ is the current layer. $rodCnt[ L ]$ is the number of rods in layer $L$. 
 We know that layer $L+1$ won't be started if it can't be completed. In other words, layer $L+1$ won't 
 be started unless we know that there are at least $L+1$ remaining/unwelded rods. 
-Also, rods are added to layer $L$ while $rodCnt[ L ] > rodCnt[ L-1 ]$ which maintaines the 
+Also, rods are added to layer $L$ while $rodCnt[ L ] \le rodCnt[ L-1 ]$ which maintaines the 
 second criterion.
 Given that the second criterion is maintained, the first criterion is also met since we also always 
 add the shortest remaining rod to the beam:
